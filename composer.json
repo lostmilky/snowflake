@@ -1,0 +1,21 @@
+{
+    "name": "lostmilky/snowflake",
+    "description": "基于信号量和共享内存实现的高效雪花ID生成库",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "lostmilky",
+            "email": "zzyydd520@163.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "lostmilky/locallock": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lostmilky\\Snowflake\\": "src/"
+        }
+    }
+}
