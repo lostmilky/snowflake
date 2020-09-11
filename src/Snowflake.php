@@ -5,9 +5,6 @@ use Lostmilky\LocalLock\LocalLock;
 
 class Snowflake
 {
-    public static $startMicroTime = 0;   // 初始的
-
-
     public static function getMicroTime()
     {
         return floor(microtime(true) * 1000);
@@ -15,12 +12,21 @@ class Snowflake
 
     public static function getTimeSequence($micro_time)
     {
-        return $micro_time - self::$startMicroTime;
+        $startMicroTime = self::getStartMicroTime();
+        if($startMicroTime > $micro_time) {
+            throw new \Exception('Timestamp is out of order', 501);
+        }
+        return $micro_time - $startMicroTime;
+    }
+
+    public static function getStartMicroTime()
+    {
+        return config('snowflake.star_micro_time');
     }
 
     public static function getWorkerId()
     {
-        return 1;
+        return config('snowflake.workerid');
     }
 
     public static function snId()
