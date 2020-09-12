@@ -1,10 +1,9 @@
 <?php
-
-namespace Lostmilky\Snowflake;
+namespace Lostmilky\Snowflake\Facades;
 
 use \Illuminate\Support\Facades\Facade;
 
-class SnowflakeFacade extends Facade {
+class Snowflake extends Facade {
 
     protected static function getFacadeAccessor() {
         return 'Snowflake';

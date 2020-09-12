@@ -24,7 +24,7 @@
                 "Lostmilky\\Snowflake\\SnowflakeProvider"
             ],
             "aliases": {
-                "Snowflake": "Lostmilky\\Snowflake\\SnowflakeFacade"
+                "Snowflake": "Lostmilky\\Snowflake\\Facades\\Snowflake"
             }
         }
     }
