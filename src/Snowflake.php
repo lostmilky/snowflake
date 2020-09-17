@@ -1,7 +1,7 @@
 <?php
 namespace Lostmilky\Snowflake;
 
-use Lostmilky\LocalLock\LocalLock;
+use Lostmilky\Locallock\LocalLock;
 
 class Snowflake
 {
@@ -12,9 +12,9 @@ class Snowflake
 
     public function __construct()
     {
-        $this->center_id = intval(config('snowflake.center_id') );
-        $this->server_id = intval(config('snowflake.server_id') );
-        $this->start_micro_time = intval(config('snowflake.start_micro_time') );
+        $this->center_id = intval(config('snowflake.center_id', 1) );
+        $this->server_id = intval(config('snowflake.server_id', 1) );
+        $this->start_micro_time = intval(config('snowflake.start_micro_time', 0) );
         $this->current_micro_time = $this->getMicroTime();
 
         $this->checkConfig();
@@ -68,7 +68,8 @@ class Snowflake
 
     public function snId()
     {
-        LocalLock::lock('s');
+        $lock = new LocalLock();
+        $lock->lock('s');
         $key = ftok(__FILE__, "K");
         $shmid = shmop_open($key, 'c', 0644, 18);
         $cache = shmop_read($shmid, 0, 18);
@@ -99,7 +100,7 @@ class Snowflake
         shmop_write($shmid, $this->current_micro_time.'-'.$seq_id, 0);
         shmop_close($shmid);
 
-        LocalLock::unlock('s');
+        $lock->unlock('s');
 
         $id = $seq_id - 1000; // 前面由于占位原因是1000开启的，这里取消补偿
         return (string) ($this->getTimeSequence() << 22 | $this->center_id << 17 | $this->server_id << 12 | $id);
