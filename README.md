@@ -11,7 +11,7 @@
 
 ### laravel 安装
 ```
-composer require lostmilky/locallock
+composer require lostmilky/snowflake
 ```
 > laravel 需要修改 app/config/app.php
 > 
