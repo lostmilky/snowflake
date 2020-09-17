@@ -1,6 +1,7 @@
 <?php
 namespace Lostmilky\Snowflake;
 
+use Illuminate\Config\Repository;
 use Lostmilky\LocalLock\LocalLock;
 
 class Snowflake
@@ -10,8 +11,9 @@ class Snowflake
     public $start_micro_time = 0;       // 开始时间的毫秒级时间戳
     public $current_micro_time = 0;     // 当前的毫秒级时间戳
 
-    public function __construct()
+    public function __construct(Repository $config)
     {
+        $this->config = $config;
         $this->center_id = intval(config('snowflake.center_id') );
         $this->server_id = intval(config('snowflake.server_id') );
         $this->start_micro_time = intval(config('snowflake.start_micro_time') );

@@ -15,9 +15,9 @@ class SnowflakeProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(
-            dirname(__DIR__).'/config/snowflake.php', 'snowflake'
-        );
+        $this->app->singleton('snowflake', function ($app) {
+            return new Snowflake($app['config']);
+        });
     }
 
     /**
@@ -29,7 +29,7 @@ class SnowflakeProvider extends ServiceProvider
     {
         //
         $this->publishes(
-            [dirname(__DIR__).'/config/snowflake.php' => config_path('snowflake.php')]
+            [__DIR__.'/config/snowflake.php' => config_path('snowflake.php')]
         );
     }
 
