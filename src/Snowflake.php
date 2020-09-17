@@ -5,9 +5,9 @@ use Lostmilky\Locallock\LocalLock;
 
 class Snowflake
 {
-    public $center_id = 1;              // IDC 机房 id
-    public $server_id = 1;              // 机器 id
-    public $start_micro_time = 0;       // 开始时间的毫秒级时间戳
+    public $center_id;              // IDC center id
+    public $server_id;              // Server id
+    public $start_micro_time;       // Set start micro time
 
     public $lock;
 
@@ -21,6 +21,12 @@ class Snowflake
         $this->lock = new LocalLock();
     }
 
+    /**
+     * Desc: Check env config
+     * @throws \Exception
+     * @author lostmilky zzyydd520@163.com
+     * Date: 2020/9/17 17:58
+     */
     public function checkConfig()
     {
         if($this->center_id > 32 || $this->center_id < 1) {
@@ -36,7 +42,14 @@ class Snowflake
         }
     }
 
-
+    /**
+     * Desc: Parse snow id
+     * @param string $id
+     * @param bool $decimal
+     * @return array
+     * @author lostmilky zzyydd520@163.com
+     * Date: 2020/9/17 17:58
+     */
     public function parseSnId(string $id, $decimal = false): array
     {
         $id = decbin($id);
@@ -53,19 +66,36 @@ class Snowflake
         }, $data) : $data;
     }
 
-
+    /**
+     * Desc: Get current micro time
+     * @return false|float
+     * @author lostmilky zzyydd520@163.com
+     * Date: 2020/9/17 18:00
+     */
     public function getMicroTime()
     {
         return floor(microtime(true) * 1000);
     }
 
-
-    public function getTimeSequence($current_micro_time)
+    /**
+     * Desc: Get diff micro time
+     * @param $current_micro_time
+     * @return int
+     * @author lostmilky zzyydd520@163.com
+     * Date: 2020/9/17 18:00
+     */
+    public function getDiffMicroTime($current_micro_time)
     {
         return $current_micro_time - $this->start_micro_time;
     }
 
-
+    /**
+     * Desc: Get snow flake id
+     * @return string
+     * @throws \Exception
+     * @author lostmilky zzyydd520@163.com
+     * Date: 2020/9/17 18:01
+     */
     public function snId()
     {
         $this->lock->lock('s');
@@ -103,12 +133,9 @@ class Snowflake
         $this->lock->unlock('s');
 
         $id = $seq_id - 1000; // 前面由于占位原因是1000开启的，这里取消补偿
-        $sid = $this->getTimeSequence($current_micro_time);
+        $sid = $this->getDiffMicroTime($current_micro_time);
 
         return (string) ($sid << 22 | $this->center_id << 17 | $this->server_id << 12 | $id);
     }
 
-
 }
-
-
