@@ -16,7 +16,7 @@ class SnowflakeProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('snowflake', function ($app) {
-            return new Snowflake($app['config']);
+            return new Snowflake();
         });
     }
 
