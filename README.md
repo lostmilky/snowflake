@@ -11,7 +11,11 @@
 
 ### laravel 安装
 ```
+# 执行安装
 composer require lostmilky/snowflake
+
+# 发布配置文件，发布后位于 app/config/snowflake.php
+php artisan vendor:publish --provider="Lostmilky\Snowflake\SnowflakeProvider"
 ```
 > laravel 需要修改 app/config/app.php
 > 
@@ -20,6 +24,8 @@ composer require lostmilky/snowflake
 > Lostmilky\Locallock\LocalLockProvider::class,
 >
 > Lostmilky\Snowflake\SnowflakeProvider::class,
+>
+
 
 ###### Facades 安装（可选）
 > 需要修改 app/config/app.php 在 aliases 里增加如下一行
